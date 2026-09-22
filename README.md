@@ -4,7 +4,7 @@ Windfall watches airfare to your dream destinations and tells you when a fare dr
 
 You list the places you want to go, the date ranges you have open, and what you'd pay for the flight. A background job checks flight prices on a schedule and notifies you when a fare clears your target for a destination that fits one of your windows. Hotels (and later, activities) are looked up on demand for a specific deal instead of being scanned continuously, because airfare is the volatile, hard-to-time part of a trip's cost.
 
-> **Status:** Phase 0 (foundation) is complete. The app is a placeholder page for now; the roadmap below lists what comes next.
+> **Status:** Phase 1 is in progress. You can create an account, confirm it by email, log in and out, and reset a forgotten password; the dashboard behind it is still a placeholder. The roadmap below lists what comes next.
 
 ## Architecture
 
@@ -69,6 +69,28 @@ npm run dev
 Then open http://localhost:3000. You need a Supabase project for the app to
 start; `npm run dev` stops with a message naming any variable you have not
 filled in.
+
+## Authentication
+
+Accounts are handled by Supabase Auth, with email and password sign-in and
+email confirmation switched on.
+
+- [src/proxy.ts](src/proxy.ts) runs before every request. It refreshes the
+  signed-in session so it cannot quietly expire, and redirects visitors who
+  are not signed in away from pages that need an account. Identity comes from
+  `getClaims()`, which verifies the token signature, rather than
+  `getSession()`, which reads the cookie without checking it.
+- [src/app/auth/actions.ts](src/app/auth/actions.ts) holds the server actions
+  the forms submit to. The validation rules they apply live in
+  [src/lib/auth/schemas.ts](src/lib/auth/schemas.ts) so the browser and the
+  server check against the same rules.
+- [src/app/auth/confirm/route.ts](src/app/auth/confirm/route.ts) exchanges the
+  one-time token in a confirmation or reset email for a session.
+
+Supabase needs three things configured for the email links to work: a **Site
+URL**, a **Redirect URLs** allowlist covering local development and Vercel
+preview deployments, and the confirmation and reset email templates pointed
+at `/auth/confirm`.
 
 ## Database
 
