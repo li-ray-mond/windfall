@@ -1,7 +1,14 @@
-import type { NextConfig } from "next";
+/**
+ * Next.js configuration.
+ *
+ * Importing the environment loader here makes `next dev` and `next build`
+ * validate environment variables before doing anything else, so a missing
+ * or invalid value stops the app immediately with a clear message.
+ */
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+import type { NextConfig } from "next";
+import "./src/env";
+
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
