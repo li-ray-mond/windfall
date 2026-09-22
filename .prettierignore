@@ -1,0 +1,4 @@
+# npm writes the lockfile and `next dev` rewrites AGENTS.md; formatting
+# either one would only create noise in diffs.
+package-lock.json
+AGENTS.md
