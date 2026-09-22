@@ -1,0 +1,3 @@
+# Use LF line endings in the repo and in every checkout, including on
+# Windows, so files match the Linux CI runner and Prettier's default.
+* text=auto eol=lf
