@@ -7,7 +7,7 @@
  */
 
 import type { NextConfig } from "next";
-import "./src/env";
+import "./src/env/server";
 
 const nextConfig: NextConfig = {};
 
