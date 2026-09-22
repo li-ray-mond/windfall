@@ -16,6 +16,15 @@ jobs:
   checks:
     name: Lint, type-check, test, build
     runs-on: ubuntu-latest
+
+    # The type-check and build steps load next.config.ts, which validates
+    # environment variables, so they fail without these. CI only compiles the
+    # app and never connects to Supabase, so obvious placeholders are correct
+    # here. Real values live in the Vercel project settings.
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_placeholder
+
     steps:
       - uses: actions/checkout@v7
 
