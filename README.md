@@ -66,13 +66,28 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Then open http://localhost:3000.
+Then open http://localhost:3000. You need a Supabase project for the app to
+start; `npm run dev` stops with a message naming any variable you have not
+filled in.
+
+## Database
+
+Schema changes are versioned as SQL migration files in `supabase/migrations/`
+and applied with the Supabase CLI, which is installed as a dev dependency and
+run with `npx supabase`. Nothing is changed by clicking around in the Supabase
+dashboard, so every environment ends up with the same schema in the same order.
+The first migrations arrive in Phase 2.
 
 ## Environment variables
 
-Every variable the app reads is listed in [.env.example](.env.example) with a one-line explanation. [src/env.ts](src/env.ts) validates them with Zod whenever the app starts or builds, and a missing or invalid value stops the app with a message naming the variable. Real values go in `.env.local` for local development, or in the Vercel project settings for deployments. They are never committed.
+Every variable the app reads is listed in [.env.example](.env.example) with a one-line explanation. Zod validates them whenever the app starts or builds, and a missing or invalid value stops the app with a message naming the variable. Real values go in `.env.local` for local development, or in the Vercel project settings for deployments. They are never committed.
 
-Phase 0 needs no variables yet. Each later phase adds the ones it uses.
+The variables are split in two so that a secret cannot end up in code users download:
+
+- [src/env/client.ts](src/env/client.ts) holds the `NEXT_PUBLIC_` variables, which are compiled into the browser bundle by design. A test fails if anything else is added to it.
+- [src/env/server.ts](src/env/server.ts) holds everything the server may read, including secrets. `next.config.ts` imports it, which is what makes the check run at startup.
+
+Phase 1 adds `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. Each later phase adds the ones it uses.
 
 ## Scripts and tests
 
