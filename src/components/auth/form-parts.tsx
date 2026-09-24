@@ -22,6 +22,13 @@ type TextFieldProps = {
   autoComplete: string;
   /** Validation messages for this field, if the last submission had any. */
   errors?: string[];
+  /**
+   * Called with the current text whenever it changes.
+   *
+   * The input stays uncontrolled; this only reports what was typed, so a
+   * page can show live feedback without owning the value.
+   */
+  onChange?: (value: string) => void;
 };
 
 /**
@@ -36,6 +43,7 @@ export function TextField({
   type,
   autoComplete,
   errors,
+  onChange,
 }: TextFieldProps) {
   const errorId = `${name}-error`;
   const hasError = errors !== undefined && errors.length > 0;
@@ -51,6 +59,9 @@ export function TextField({
         type={type}
         autoComplete={autoComplete}
         required
+        onChange={
+          onChange ? (event) => onChange(event.target.value) : undefined
+        }
         // These two attributes are what let a screen reader announce the
         // error with the field, rather than reading it as loose text.
         aria-invalid={hasError || undefined}

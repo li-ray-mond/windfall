@@ -8,13 +8,14 @@
  */
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { signUp, type AuthFormState } from "@/app/auth/actions";
 import {
   FormMessage,
   SubmitButton,
   TextField,
 } from "@/components/auth/form-parts";
+import { PasswordChecklist } from "@/components/auth/password-checklist";
 
 const emptyState: AuthFormState = {};
 
@@ -25,6 +26,12 @@ const emptyState: AuthFormState = {};
  */
 export default function SignUpPage() {
   const [state, submit] = useActionState(signUp, emptyState);
+
+  // Mirrors of what is in the two password boxes, kept only so the checklist
+  // can react as they are typed. The inputs themselves stay uncontrolled, so
+  // the form still works if this component's JavaScript hasn't loaded.
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   return (
     <main className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center gap-6 px-6 py-16 font-sans">
@@ -53,6 +60,20 @@ export default function SignUpPage() {
             type="password"
             autoComplete="new-password"
             errors={state.fieldErrors?.password}
+            onChange={setPassword}
+          />
+          <TextField
+            label="Confirm password"
+            name="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            errors={state.fieldErrors?.confirmPassword}
+            onChange={setConfirmPassword}
+          />
+
+          <PasswordChecklist
+            password={password}
+            confirmPassword={confirmPassword}
           />
 
           <SubmitButton>Sign up</SubmitButton>
