@@ -83,6 +83,7 @@ export async function signUp(
   const parsed = signUpSchema.safeParse({
     email: field(formData, "email"),
     password: field(formData, "password"),
+    confirmPassword: field(formData, "confirmPassword"),
   });
 
   if (!parsed.success) {
