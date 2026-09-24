@@ -83,7 +83,9 @@ email confirmation switched on.
 - [src/app/auth/actions.ts](src/app/auth/actions.ts) holds the server actions
   the forms submit to. The validation rules they apply live in
   [src/lib/auth/schemas.ts](src/lib/auth/schemas.ts) so the browser and the
-  server check against the same rules.
+  server check against the same rules. New passwords must be at least 12
+  characters and are typed twice; there is deliberately no rule requiring a
+  mixture of character types, for the reasons recorded in that file.
 - [src/app/auth/confirm/route.ts](src/app/auth/confirm/route.ts) exchanges the
   one-time token in a confirmation or reset email for a session.
 
