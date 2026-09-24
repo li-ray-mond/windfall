@@ -2,8 +2,10 @@
  * Homepage (the "/" route).
  *
  * A placeholder until the dashboard exists: it shows the app's name and
- * what Windfall will do.
+ * what Windfall will do, and points visitors at signing up or logging in.
  */
+
+import Link from "next/link";
 
 /**
  * Renders the placeholder homepage.
@@ -20,7 +22,20 @@ export default function HomePage() {
         Airfare deal alerts for your dream destinations, on the dates
         you&rsquo;re free to travel.
       </p>
-      <p className="text-sm text-zinc-500">Coming soon.</p>
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <Link
+          href="/signup"
+          className="rounded-md bg-zinc-900 px-4 py-2 text-base font-medium text-white dark:bg-zinc-100 dark:text-zinc-900"
+        >
+          Sign up
+        </Link>
+        <Link
+          href="/login"
+          className="rounded-md border border-zinc-300 px-4 py-2 text-base font-medium dark:border-zinc-700"
+        >
+          Log in
+        </Link>
+      </div>
     </main>
   );
 }
